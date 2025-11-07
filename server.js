@@ -33,6 +33,16 @@ app.use('/api/users', UserRoutes) //definimos el endpoint de nuestra API hacia e
 const AuthRoutes = require('./routes/authRoutes')
 app.use('/api/auth', AuthRoutes) //definimos el endpoint de nuestra API hacia este modelo en concreto
 
+//Ruta raíz para verificar que el servidor está funcionando
+app.get('/', (req, res) => {
+    res.status(200).json({
+        message: "API funcionando correctamente ✅",
+        endpoints: {
+            users: "/api/users",
+            auth: "/api/auth"
+        }
+    })
+})
 
 //Manejo de rutas no encontradas (404)
 app.use((req, res) => {res.status(404).json({error: "Ruta no encontrada 💀"})})
@@ -43,8 +53,9 @@ app.use(errors)
 
 // arrancar el servidor
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-    console.log(`Servidor ESCUCHANDO en http://localhost:${PORT}`))
+const HOST = '0.0.0.0'; // Necesario para Render - escucha en todas las interfaces de red
+app.listen(PORT, HOST, () =>
+    console.log(`Servidor ESCUCHANDO en http://${HOST}:${PORT}`))
 
 
 
